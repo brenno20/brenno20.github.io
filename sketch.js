@@ -25,7 +25,8 @@ qy6=650
 //disparo
 vel=15
 disparo=false
-var ty,tx
+var ty
+var tx
 //placar
 var vidas = 5
 var pontos = 0
@@ -36,28 +37,33 @@ var barreiradepontos=1000
 tela=1
 
 
+
+
 function preload() {
-  //fundotela1=loadImage('fundotela1')
- //fundotela2=loadImage('fundotela2')
- // fundotela3=loadImage('fundotela3')
-  //fundotela4=loadImage('fundotela4')
+  fundotela1=loadImage('fundotela1.jpg')
+ fundotela2=loadImage('fundotela2.jpg')
+ fundotela3=loadImage('fundotela3.jpg')
+  fundotela4=loadImage('fundotela4.jpg')
   imgnave = loadImage('ship_87.png');
   imginimigo = loadImage('ship_25.png');
+  somtiro=loadSound("tiro.wav")
 }
-
+//imageMode(CENTER)
 function setup() {
   createCanvas(1080, 720);
-  //xdo = 50;	
-  //ydo = 440; 
+  somtiro.setVolume(2.0)
+  	
+  
   frameRate(100)
+  
 }
 
 function draw() {
 
   if(tela==1){ 
-   background(0);
+   background(fundotela1);
     textSize(32); 
-    fill(0,100,500);
+    fill(255,0,0);
     text("JOGO DA NAVE ", 400, 300);
     text("press ENTER para jogar ", 360, 450)
     if (keyIsDown(ENTER) ) {
@@ -65,19 +71,18 @@ function draw() {
     } 
   }
   if(tela==2){
-  background(0);
-  imageMode(CENTER)
+    background(0);
+    imageMode(CENTER)
+  
+    
   //ellipse(ex,ey,40,40)  
   image(imgnave,ex,ey)
+   
+
   
-  if(disparo == true){
-     
-     tx = tx + vel
-     if(tx >= 600 || tx<=0){
-       vel = 15
-       disparo = false 
-     }
-  }
+  
+  
+  
     if(ex>=1080){
       ex=1080
     }
@@ -93,7 +98,7 @@ function draw() {
   //inimigos
   //ellipse(qx1,qy1,2*raio,2*raio)
   image(imginimigo,qx1,qy1)
-  // ellipse(qx2,qy2,2*raio,2*raio)
+  //ellipse(qx2,qy2,2*raio,2*raio)
  image(imginimigo,qx2,qy2)
   //movimentaçao com teclado
 if (keyIsDown(LEFT_ARROW)) {
@@ -125,11 +130,15 @@ if(qx2<=0){
 
 }
 //disparo
+    
 if(disparo == true){
-     ellipse(tx,ty,10,10)
-     tx = tx + vel
+  
+ 
+  ellipse(tx,ty,10,10)
+     
+  tx = tx + vel
      if(tx >= 1080|| tx<=0){
-       vel = 15
+       vel = 40
        disparo = false 
      }
 
@@ -152,8 +161,9 @@ if(disparo == true){
     if(keyCode === CONTROL){  
     if(disparo == false){
       disparo = true
-      tx = ex + 40
-      ty = ey
+      tx = ex+30
+      somtiro.play()
+      ty=ey
       
     }
  
@@ -227,7 +237,7 @@ if(dist(tx, ty, qx3, qy3)<raio*3){
       
     if(dist(tx, ty, qx4, qy4)<raio*3){
     pontos=pontos+50
-    vidas=vidas-1
+  
    qx4=random(1080,1500)
   qy4=random(0,700)
   }
@@ -277,46 +287,39 @@ if(dist(tx, ty, qx3, qy3)<raio*3){
    pontos=pontos+25
    qx6=random(1080,1500)
   qy6=random(0,700)
-  }
-  
-  
-  
-  } 
+      } 
+   }    
+}
     
     
-    
-    
-
-    
-    }
-  if(nivel==4){
+  if(pontos>=4000){
     tela=4
-       background(0);
+       background(fundotela4);
     textSize(32); 
     fill(0,100,500);
     text("VOCê VENCEU!", 400, 300);
     text("press ENTER para voltar para o início ", 200, 450)
     if(keyIsDown(ENTER)){
-       tela =1;  
+       tela =1; 
+      vidas=5
   
 
 }
   }
      if(vidas==0){
     tela=3
-       background(0);
+       background(fundotela3);
     textSize(32); 
     fill(0,100,500);
     text("GAME OVER ", 400, 300);
     text("press ENTER para voltar para jogar novamente", 200, 450)
+       
     if(keyIsDown(ENTER)){
-       tela=1
+       tela = 1;
+      vidas=5
       
     } 
-      
-      
-  
     }
 
 
-    }
+}
